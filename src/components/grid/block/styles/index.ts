@@ -10,22 +10,22 @@ export const Container = styled.div`
     flex-grow: 1;
     flex-shrink: 0;
     flex-basis: 0;
-    font-weight: bold;
     font-size: 20px;
+    font-weight: bold;
     height: auto;
     justify-content: center;
     transition: ${theme.transition};
     user-select: none;
 
-    /* Makes the blocks square and stay responsive */
-    &::before{
-        padding-top:100%;
-        content:'',
-        float:left;
+    /* Ensures the block stays square */
+    &:before {
+      padding-top: 100%;
+      content: '';
+      float: left;
     }
 
-    &:hover{
-        background-color: ${theme.colors.lightBlue}
+    &:hover {
+      background-color: ${theme.colors.lightBlue};
     }
   `}
 `;
