@@ -1,11 +1,25 @@
-import React, { FC } from 'react';
+import React, { FC, Dispatch, useCallback, useEffect } from 'react';
 import { Container, Row } from './styles/index';
 import Block from './block';
-import { createFullGrid } from 'utils';
+import { useDispatch } from 'react-redux';
+import { AnyAction } from 'redux';
+import { createGrid } from 'reducers';
 
 const Grid: FC = () => {
-  const grid = createFullGrid();
+  // const grid = createFullGrid();
   // Other on the way
+
+  const dispatch = useDispatch<Dispatch<AnyAction>>();
+  // Only if dispatch changes, usecallback changes
+  const create = useCallback(() => {
+    dispatch(createGrid());
+  }, [dispatch]);
+
+  // Happens on load, create changes -> runs the callback which is dispatch
+  useEffect(() => {
+    create();
+  }, [create]);
+
   return (
     <Container data-cy="grid-container">
       {React.Children.toArray(
