@@ -1,6 +1,8 @@
 import { GRID, BLOCK_COORDS } from 'typings';
 
 export interface IReducer {
-  grid?: GRID;
+  workingGrid?: GRID;
+  solvedGrid?: GRID;
+  challengeGrid?: GRID;
   selectedBlock?: BLOCK_COORDS;
 }
