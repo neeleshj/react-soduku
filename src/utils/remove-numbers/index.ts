@@ -1,6 +1,8 @@
 import { GRID } from 'typings';
 import { getRandomIndex } from 'utils';
 import copyGrid from 'utils/copy-grid';
+import global from 'global';
+import solveGrid from 'utils/solve-grid';
 
 /**
  * Removes numbers from a full grid to create a soduku puzzle
@@ -21,6 +23,15 @@ function removeNumbers(grid: GRID, attempts: number = 5): GRID {
     grid[row][col] = 0;
 
     const gridCopy = copyGrid(grid);
+
+    global.counter = 0;
+
+    solveGrid(gridCopy);
+
+    if (global.counter !== 1) {
+      grid[row][col] = backup;
+      attempts--;
+    }
   }
 
   return grid;
