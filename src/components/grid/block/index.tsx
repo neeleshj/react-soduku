@@ -1,10 +1,11 @@
-import React, { FC, Dispatch } from 'react';
-import { Container } from './styles';
+import React, { FC } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Dispatch, AnyAction } from 'redux';
 
 import { IReducer, selectBlock } from 'reducers';
-import { useSelector, useDispatch } from 'react-redux';
 import { N, INDEX } from 'typings';
-import { AnyAction } from 'redux';
+
+import { Container } from './styles';
 
 interface IProps {
   colIndex: INDEX;
@@ -12,23 +13,25 @@ interface IProps {
 }
 
 interface IState {
-  value: N;
   isActive: boolean;
+  isPuzzle: boolean;
+  value: N;
 }
 
 const Block: FC<IProps> = ({ colIndex, rowIndex }) => {
   const state = useSelector<IReducer, IState>(
-    ({ workingGrid, selectedBlock }) => ({
+    ({ challengeGrid, selectedBlock, workingGrid }) => ({
       isActive: selectedBlock
         ? selectedBlock[0] === rowIndex && selectedBlock[1] === colIndex
         : false,
+      isPuzzle:
+        challengeGrid && challengeGrid[rowIndex][colIndex] !== 0 ? true : false,
       value: workingGrid ? workingGrid[rowIndex][colIndex] : 0,
     })
   );
-
   const dispatch = useDispatch<Dispatch<AnyAction>>();
 
-  function handleClick(): void {
+  function handleClick() {
     if (!state.isActive) dispatch(selectBlock([rowIndex, colIndex]));
   }
 
@@ -37,6 +40,7 @@ const Block: FC<IProps> = ({ colIndex, rowIndex }) => {
       active={state.isActive}
       data-cy={`block-${rowIndex}-${colIndex}`}
       onClick={handleClick}
+      puzzle={state.isPuzzle}
     >
       {state.value === 0 ? '' : state.value}
     </Container>
