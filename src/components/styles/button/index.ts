@@ -9,6 +9,7 @@ export const Button = styled.button`
     color: ${theme.colors.white};
     cursor: pointer;
     display: flex;
+    flex: 1;
     justify-content: center;
     font-size: 16px;
     font-weight: bold;
