@@ -4,22 +4,25 @@ import Block from './block';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction } from 'redux';
 import { createGrid, IReducer, selectBlock, fillBlock } from 'reducers';
-import { INDEX, BLOCK_COORDS, NUMBERS, N } from 'typings';
+import { INDEX, BLOCK_COORDS, NUMBERS, N, GRID } from 'typings';
 import useMousetrap from 'react-hook-mousetrap';
+import { solveGrid } from 'utils';
 
 interface IState {
   selectedBlock?: BLOCK_COORDS;
   selectedValue: N;
+  solvedGrid?: GRID;
 }
 
 const Grid: FC = () => {
   const state = useSelector<IReducer, IState>(
-    ({ selectedBlock, workingGrid }) => ({
+    ({ selectedBlock, solvedGrid, workingGrid }) => ({
       selectedBlock,
       selectedValue:
         workingGrid && selectedBlock
           ? workingGrid[selectedBlock[0]][selectedBlock[1]]
           : 0,
+      solvedGrid,
     })
   );
 
@@ -32,8 +35,8 @@ const Grid: FC = () => {
 
   // Happens on load, create changes -> runs the callback which is dispatch
   useEffect(() => {
-    create();
-  }, [create]);
+    if (!state.solvedGrid) create();
+  }, [create, state.solvedGrid]);
 
   const fill = useCallback(
     (n: NUMBERS) => {
